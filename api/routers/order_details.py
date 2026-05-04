@@ -1,13 +1,10 @@
-from fastapi import APIRouter, Depends, FastAPI, status, Response
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from ..controllers import order_details as controller
 from ..schemas import order_details as schema
-from ..dependencies.database import engine, get_db
+from ..dependencies.database import get_db
 
-router = APIRouter(
-    tags=['Order Details'],
-    prefix="/orderdetails"
-)
+router = APIRouter(tags=["Order Details"], prefix="/orderdetails")
 
 
 @router.post("/", response_model=schema.OrderDetail)
@@ -26,7 +23,9 @@ def read_one(item_id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/{item_id}", response_model=schema.OrderDetail)
-def update(item_id: int, request: schema.OrderDetailUpdate, db: Session = Depends(get_db)):
+def update(
+    item_id: int, request: schema.OrderDetailUpdate, db: Session = Depends(get_db)
+):
     return controller.update(db=db, request=request, item_id=item_id)
 
 
